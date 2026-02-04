@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marostica Fotografia 1979 | Circolo Fotografico dal 1979</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f0f;
+            --text-primary: #f5f5f9;
+            --accent: #e74c3c;
+            --card-bg: #1a1a1a;
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 15, 15, 0.95);
+            padding: 1rem 5%;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1493863641943-9b68992a8d07?q=80&w=1920') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 5%;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            color: #e0e0e0;
+            font-weight: 300;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 5%;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #999;
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Chi Siamo */
+        .chi-siamo-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .chi-siamo-text h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .chi-siamo-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .chi-siamo-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .chi-siamo-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .chi-siamo-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Eventi */
+        .eventi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .evento-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .evento-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(231, 76, 60, 0.2);
+        }
+
+        .evento-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .evento-content {
+            padding: 1.5rem;
+        }
+
+        .evento-content h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .evento-content p {
+            color: #bbb;
+            line-height: 1.6;
+        }
+
+        /* Corsi */
+        .corsi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .corso-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .corso-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .corso-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .corso-card p {
+            color: #999;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .corso-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .corso-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .corso-btn:hover {
+            background: var(--accent);
+            color: var(--text-primary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent), #c0392b);
+            text-align: center;
+            padding: 5rem 5%;
+        }
+
+        .cta-section h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cta-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: var(--font-body);
+        }
+
+        .cta-form button {
+            padding: 1rem 2rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-body);
+        }
+
+        .cta-form button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Contatti */
+        .contatti-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contatti-info h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+        }
+
+        .contatti-info p {
+            font-size: 1.1rem;
+            color: #bbb;
+            margin-bottom: 1rem;
+        }
+
+        .contatti-info strong {
+            color: var(--text-primary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-icons a {
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .contact-form {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #ccc;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-body);
+        }
+
+        .submit-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .form-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .form-message.success {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+        }
+
+        .form-message.error {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 2rem 5%;
+            text-align: center;
+            color: #666;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background: rgba(15, 15, 15, 0.98);
+                width: 100%;
+                padding: 2rem 5%;
+                gap: 1.5rem;
+                transition: left 0.3s ease;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .chi-siamo-content,
+            .contatti-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .eventi-grid,
+            .corsi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-form {
+                flex-direction: column;
+            }
+
+            .cta-form input {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            section {
+                padding: 4rem 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">MAROSTICA <span>FOTOGRAFIA</span> 1979</div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#chi-siamo">Chi Siamo</a></li>
+            <li><a href="#eventi">Eventi</a></li>
+            <li><a href="#corsi">Corsi</a></li>
+            <li><a href="#contatti">Contatti</a></li>
+        </ul>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>L'arte dello scatto, dal 1979</h1>
+            <p>Unisciti al circolo fotografico più storico di Marostica per esplorare nuove prospettive.</p>
+            <a href="#corsi" class="cta-btn">Scopri i Corsi</a>
+        </div>
+    </section>
+
+    <!-- Chi Siamo -->
+    <section id="chi-siamo">
+        <h2 class="section-title">Chi Siamo</h2>
+        <p class="section-subtitle">La passione per la fotografia che dura da oltre 40 anni</p>
+        <div class="chi-siamo-content">
+            <div class="chi-siamo-text">
+                <h3>La Nostra Storia</h3>
+                <p>Siamo un'associazione dedicata alla promozione della cultura fotografica. Fondata nel 1979, uniamo tradizione analogica e innovazione digitale.</p>
+                <p>Il nostro circolo è un punto di riferimento per fotografi di ogni livello, dalla passione amatoriale alla ricerca artistica più avanzata. Organizziamo eventi, mostre e corsi per condividere la bellezza dell'immagine.</p>
+            </div>
+            <div class="chi-siamo-image">
+                <img src="https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=800" alt="Fotografia storica">
+            </div>
+        </div>
+    </section>
+
+    <!-- Eventi -->
+    <section id="eventi">
+        <h2 class="section-title">Eventi</h2>
+        <p class="section-subtitle">Scopri le nostre iniziative per celebrare l'arte fotografica</p>
+        <div class="eventi-grid">
+            <div class="evento-card">
+                <img src="https://images.unsplash.com/photo-1531050171669-01446ad76e7d?w=800" alt="Mostra in Castello">
+                <div class="evento-content">
+                    <h3>Mostra Annuale in Castello</h3>
+                    <p>L'evento più atteso dell'anno: le opere dei nostri soci esposte nelle suggestive sale del Castello Scaligero di Marostica.</p>
+                </div>
+            </div>
+            <div class="evento-card">
+                <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800" alt="Workshop Street Photography">
+                <div class="evento-content">
+                    <h3>Workshop Street Photography</h3>
+                    <p>Un'intera giornata dedicata alla fotografia di strada: tecniche, etica e pratica sul campo nelle vie del centro storico.</p>
+                </div>
+            </div>
+            <div class="evento-card">
+                <img src="https://images.unsplash.com/photo-1452784444945-3f422708fe5e?w=800" alt="Serata Critica Autori">
+                <div class="evento-content">
+                    <h3>Serata Critica Autori</h3>
+                    <p>Momenti di confronto costruttivo dove ogni socio può presentare i propri lavori e ricevere feedback da esperti del settore.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Corsi -->
+    <section id="corsi">
+        <h2 class="section-title">I Nostri Corsi</h2>
+        <p class="section-subtitle">Impara dai migliori e porta la tua fotografia al livello successivo</p>
+        <div class="corsi-grid">
+            <div class="corso-card">
+                <h3>Corso Base</h3>
+                <p>8 lezioni complete per padroneggiare la tua reflex: esposizione, composizione e tecnica di base.</p>
+                <div class="corso-price">€150</div>
+                <a href="#contatti" class="corso-btn">Iscriviti Ora</a>
+            </div>
+            <div class="corso-card">
+                <h3>Corso Avanzato</h3>
+                <p>Tecnica di post-produzione e storytelling: trasforma le tue foto in racconti visuali d'impatto.</p>
+                <div class="corso-price">€200</div>
+                <a href="#contatti" class="corso-btn">Iscriviti Ora</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>La tua reflex prende polvere?</h2>
+        <p>Impara a usarla in 5 mosse. Scarica la guida gratuita!</p>
+        <form class="cta-form" id="ctaForm">
+            <input type="email" placeholder="La tua email" required id="ctaEmail">
+            <button type="submit">Scarica Gratis</button>
+        </form>
+        <div class="form-message" id="ctaMessage"></div>
+    </section>
+
+    <!-- Contatti -->
+    <section id="contatti">
+        <h2 class="section-title">Contatti</h2>
+        <p class="section-subtitle">Scrivici o vieni a trovarci nella nostra sede</p>
+        <div class="contatti-container">
+            <div class="contatti-info">
+                <h3>Dove Siamo</h3>
+                <p><strong>Indirizzo:</strong><br>Via Cesare Battisti<br>Marostica (VI), Italia</p>
+                <p><strong>Email:</strong><br>info@marosticafotografia.it</p>
+                <p><strong>Telefono:</strong><br>+39 0424 123456</p>
+                <div class="social-icons">
+                    <a href="https://instagram.com" target="_blank" aria-label="Instagram">IG</a>
+                    <a href="https://facebook.com" target="_blank" aria-label="Facebook">FB</a>
+                    <a href="https://youtube.com" target="_blank" aria-label="YouTube">YT</a>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="nome">Nome *</label>
+                        <input type="text" id="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="messaggio">Messaggio *</label>
+                        <textarea id="messaggio" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Invia Messaggio</button>
+                    <div class="form-message" id="contactMessage"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Marostica Fotografia 1979. Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Reveal Animation on Scroll
+        const sections = document.querySelectorAll('section');
+        
+        const revealSection = () => {
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (sectionTop < windowHeight * 0.75) {
+                    section.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealSection);
+        revealSection(); // Initial check
+
+        // CTA Form Validation
+        const ctaForm = document.getElementById('ctaForm');
+        const ctaMessage = document.getElementById('ctaMessage');
+
+        ctaForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('ctaEmail').value;
+
+            if (email) {
+                ctaMessage.textContent = 'Grazie! Controlla la tua email per scaricare la guida.';
+                ctaMessage.className = 'form-message success';
+                ctaMessage.style.display = 'block';
+                ctaForm.reset();
+
+                setTimeout(() => {
+                    ctaMessage.style.display = 'none';
+                }, 5000);
+            } else {
+                ctaMessage.textContent = 'Per favore, inserisci un indirizzo email valido.';
+                ctaMessage.className = 'form-message error';
+                ctaMessage.style.display = 'block';
+            }
+        });
+
+        // Contact Form Validation
+        const contactForm = document.getElementById('contactForm');
+        const contactMessage = document.getElementById('contactMessage');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const messaggio = document.getElementById('messaggio').value;
+
+            if (nome && email && messaggio) {
+                contactMessage.textContent = 'Grazie per averci contattato! Ti risponderemo al più presto.';
+                contactMessage.className = 'form-message success';
+                contactMessage.style.display = 'block';
+                contactForm.reset();
+
+                setTimeout(() => {
+                    contactMessage.style.display = 'none';
+                }, 5000);
+            } else {
+                contactMessage.textContent = 'Per favore, compila tutti i campi obbligatori.';
+                contactMessage.className = 'form-message error';
+                contactMessage.style.display = 'block';
+            }
+        });
+    </script>
+
+</body>
+</html>
+
